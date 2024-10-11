@@ -2,7 +2,10 @@
 
 
 namespace App\Service\Serializer;
-use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 
@@ -15,7 +18,9 @@ class DTOSerializer implements SerializerInterface
     {
         $this->serializer = new Serializer(
             //normalizers
+            [new ObjectNormalizer(nameConverter:new CamelCaseToSnakeCaseNameConverter())],
             //encoders
+            [new JsonEncoder()]
         );
     }
   
