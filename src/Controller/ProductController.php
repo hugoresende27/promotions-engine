@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\DTO\LowestPriceEquiry;
 use App\Entity\Promotion;
+use App\Filter\LowestPriceFilter;
 use App\Filter\PromotionsFilterInterface;
 use App\Repository\ProductRepository;
 use App\Service\Serializer\DTOSerializer;
@@ -39,7 +40,7 @@ class ProductController extends AbstractController
 
 
     #[Route('/products/{id}/lowest-price', name: 'lowest-price', methods:'POST')]
-    public function lowestPrice(Request $request, int $id, DTOSerializer $serializer, PromotionsFilterInterface $promotionsFilter): Response
+    public function lowestPrice(Request $request, int $id, DTOSerializer $serializer, LowestPriceFilter $promotionsFilter): Response
     {
 
         if ($request->headers->has('force_fail')) {
