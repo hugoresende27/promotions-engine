@@ -68,15 +68,13 @@ class ProductController extends AbstractController
                         date_create_immutable($lowestPriceEquiry->getRequestDate())
         );
 
-        dd($promotions);
+        // dd($promotions);
 
-        $modifiedEnquiry = $promotionsFilter->apply($lowestPriceEquiry, $promotions);
-       
-
+        $modifiedEnquiry = $promotionsFilter->apply($lowestPriceEquiry, ...$promotions);
 
         $responseContent =$serializer->serialize($modifiedEnquiry, 'json');
 
-        return new Response($responseContent, Response::HTTP_OK);
+        return new Response($responseContent, Response::HTTP_OK, ['Content-Type'=> 'application/json']);
 
         // return new JsonResponse($lowestPriceEquiry);
         

@@ -2,10 +2,12 @@
 
 namespace App\DTO;
 use App\Entity\Product;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 class LowestPriceEquiry implements PromotionsEnquireInterface
 {
 
+    #[Ignore]
     private ?Product $product;
 
     private ?int $quantity;
@@ -193,6 +195,13 @@ class LowestPriceEquiry implements PromotionsEnquireInterface
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function unsetProduct(): self
+    {
+        unset($this->product);
 
         return $this;
     }

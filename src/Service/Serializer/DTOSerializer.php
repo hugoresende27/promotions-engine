@@ -2,6 +2,7 @@
 
 
 namespace App\Service\Serializer;
+
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -9,6 +10,12 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 
+use Doctrine\Common\Annotations\AnnotationReader; // Correct Doctrine Annotations
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
+use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader; // Correct loader for Symfony's metadata
+
+
+use Symfony\Component\Serializer\Mapping\Loader\LoaderInterface;
 class DTOSerializer implements SerializerInterface
 {
 
@@ -18,14 +25,21 @@ class DTOSerializer implements SerializerInterface
     {
         $this->serializer = new Serializer(
             //normalizers
-            [new ObjectNormalizer(nameConverter:new CamelCaseToSnakeCaseNameConverter())],
+            normalizers: [
+                // new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader())),
+                new ObjectNormalizer(
+                    // classMetadataFactory: new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader())),
+                    // classMetadataFactory: new ClassMetadataFactoryInterface(),
+                    nameConverter:new CamelCaseToSnakeCaseNameConverter())
+            ],
             //encoders
-            [new JsonEncoder()]
+            encoders: [new JsonEncoder()]
         );
     }
   
     public function serialize(mixed $data, string $format, array $context = []): string
     {
+        $data->unsetProduct();
         return $this->serializer->serialize($data, $format, $context);
     }
 
