@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\DTO\LowestPriceEquiry;
+use App\Entity\Promotion;
 use App\Filter\PromotionsFilterInterface;
+use App\Repository\ProductRepository;
 use App\Service\Serializer\DTOSerializer;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +16,17 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ProductController extends AbstractController
 {
+
+    /** php < 8 */
+    // private ProductRepository $repository;
+    // private EntityManager $entityManager;
+    public function __construct(
+        private ProductRepository $repository, //php >= 8
+        private EntityManagerInterface $entityManager)
+    {
+        // $this->repository = $repository;
+        // $this->entityManager = $entityManager;
+    }
 
 
     #[Route('/products/{id}/promotions', name: 'promotions', methods:'GET')]
@@ -45,7 +59,18 @@ class ProductController extends AbstractController
             //the appropriate promotion will be applied
         //#. return modified Enquiry
 
-        $modifiedEnquiry = $promotionsFilter->apply($lowestPriceEquiry);
+        $product = $this->repository->find($id); //add error handling for not found product
+        
+        $lowestPriceEquiry->setProduct($product);
+
+        $promotions = $this->entityManager->getRepository(Promotion::class)->findValidForProduct(
+                        $product,
+                        date_create_immutable($lowestPriceEquiry->getRequestDate())
+        );
+
+        dd($promotions);
+
+        $modifiedEnquiry = $promotionsFilter->apply($lowestPriceEquiry, $promotions);
        
 
 

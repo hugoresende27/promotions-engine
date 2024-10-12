@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\PromotionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: PromotionRepository::class)]
 class Promotion
@@ -24,6 +26,20 @@ class Promotion
 
     #[ORM\Column]
     private array $criteria = [];
+
+
+    /**
+     * @var Collection<int, ProductPromotion>
+     */
+    #[ORM\OneToMany(targetEntity: ProductPromotion::class, mappedBy: 'promotion')]
+    private Collection $productPromotions;
+
+
+    public function __construct()
+    {
+        $this->productPromotions = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -76,5 +92,13 @@ class Promotion
         $this->criteria = $criteria;
 
         return $this;
+    }
+
+    /**
+     * Get the value of productPromotions
+     */
+    public function getProductPromotions(): ArrayCollection
+    {
+        return $this->productPromotions;
     }
 }

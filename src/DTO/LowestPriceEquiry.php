@@ -1,11 +1,12 @@
 <?php
 
 namespace App\DTO;
+use App\Entity\Product;
 
 class LowestPriceEquiry implements PromotionsEnquireInterface
 {
 
-    private ?int $productId;
+    private ?Product $product;
 
     private ?int $quantity;
 
@@ -32,23 +33,7 @@ class LowestPriceEquiry implements PromotionsEnquireInterface
         return $this->promotionName;
     }
 
-    /**
-     * Set the value of productId
-     */
-    public function setProductId(?int $productId): self
-    {
-        $this->productId = $productId;
 
-        return $this;
-    }
-
-    /**
-     * Get the value of productId
-     */
-    public function getProductId(): ?int
-    {
-        return $this->productId;
-    }
 
 
 
@@ -192,5 +177,23 @@ class LowestPriceEquiry implements PromotionsEnquireInterface
     public function jsonSerialize()
     {
         return get_object_vars($this);
+    }
+
+    /**
+     * Get the value of product
+     */
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    /**
+     * Set the value of product
+     */
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
+
+        return $this;
     }
 }
