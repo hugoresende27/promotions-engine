@@ -51,7 +51,7 @@ class PriceModifiersTest extends ServiceTestCase
         $promotion->setName('Black Friday half price sale');
         $promotion->setAdjustment(0.5);
         $promotion->setCriteria(["from" => "2025-11-25", "to" => "2025-11-28"]);
-        $promotion->setType('date_range_multiplier');
+        $promotion->setType('data_range_multiplier');
 
         $dateRangeModifier = new DataRangeMultiplier();
 

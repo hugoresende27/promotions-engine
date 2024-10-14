@@ -45,7 +45,7 @@ class LowestPriceFilterTest extends ServiceTestCase
         $promotionOne->setName('Black Friday half price sale');
         $promotionOne->setAdjustment(0.5);
         $promotionOne->setCriteria(["from" => "2022-11-25", "to" => "2022-11-28"]);
-        $promotionOne->setType('date_range_multiplier');
+        $promotionOne->setType('data_range_multiplier');
 
         $promotionTwo = new Promotion();
         $promotionTwo->setName('Voucher OU812');
@@ -59,6 +59,9 @@ class LowestPriceFilterTest extends ServiceTestCase
         $promotionThree->setCriteria(["minimum_quantity" => 2]);
         $promotionThree->setType('even_items_multiplier');
 
-        return [$promotionOne, $promotionTwo, $promotionThree];
+        return [
+            $promotionOne, 
+            $promotionTwo, 
+            $promotionThree];
     }
 }

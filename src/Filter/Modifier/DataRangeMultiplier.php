@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Filter\Modifier;
-use App\DTO\LowestPriceEquiry;
+
 use App\DTO\PromotionsEnquireInterface;
 use App\Entity\Promotion;
 
