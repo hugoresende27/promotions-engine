@@ -73,6 +73,7 @@ class ProductController extends AbstractController
 
         $modifiedEnquiry = $promotionsFilter->apply($lowestPriceEquiry, ...$promotions);
 
+        // dd($modifiedEnquiry);
         $responseContent =$serializer->serialize($modifiedEnquiry, 'json');
 
         return new Response($responseContent, Response::HTTP_OK, ['Content-Type'=> 'application/json']);

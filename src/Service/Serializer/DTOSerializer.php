@@ -40,6 +40,7 @@ class DTOSerializer implements SerializerInterface
     public function serialize(mixed $data, string $format, array $context = []): string
     {
         $data->unsetProduct();
+        // dd($data);
         return $this->serializer->serialize($data, $format, $context);
     }
 

@@ -19,12 +19,13 @@ class LowestPriceFilter implements PromotionsFilterInterface
     {
 
         $price = $enquiry->getProduct()->getPrice();
+        $enquiry->setPrice($price);
         $quantity = $enquiry->getQuantity();
+        
         $lowestPrice = $quantity * $price;
+
+
         // Loop over the promotions
-
-
-
         foreach ($promotions as $promotion) {
 
 
@@ -36,18 +37,21 @@ class LowestPriceFilter implements PromotionsFilterInterface
             // 2. Apply the price modification to obtain a $modifiedPrice (how?)
             $modifiedPrice = $priceModifier->modify($price, $quantity, $promotion, $enquiry);
     
+            // dd($modifiedPrice);
             // 3. check IF $modifiedPrice < $lowestPrice, if so apply the promotion
-                // 1. Save to Enquiry properties
+            if ($modifiedPrice < $lowestPrice) {
+    
+                $enquiry->setDiscountedPrice(250);
+                $enquiry->setPromotionId($promotion->getId());
+                $enquiry->setPromotionName($promotion->getName());
+
                 // 2. Update $lowestPrice
-    
-    
-            $enquiry->setDiscountedPrice(250);
-            $enquiry->setPrice(100);
-            $enquiry->setPromotionId(3);
-            $enquiry->setPromotionName('Promo ZEEE');
+                $lowestPrice = $modifiedPrice;
+
+            }
     
         }
-
+        // dd($enquiry, $promotions);
         return $enquiry;
     }
 
