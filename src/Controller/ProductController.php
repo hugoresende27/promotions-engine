@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\DTO\LowestPriceEquiry;
+use App\DTO\LowestPriceEnquiry;
 use App\Entity\Promotion;
 use App\Filter\LowestPriceFilter;
 use App\Filter\PromotionsFilterInterface;
@@ -52,33 +52,34 @@ class ProductController extends AbstractController
 
         //1. Desirialize json data into DTO(data transfer object) EnquiryDTO
         /**
-         * @var LowestPriceEquiry $lowestPriceEquiry
+         * @var LowestPriceEnquiry $LowestPriceEnquiry
          */
-        $lowestPriceEquiry = $serializer->deserialize($request->getContent(), LowestPriceEquiry::class, 'json');
-        // dd($lowestPriceEquiry);
+        $LowestPriceEnquiry = $serializer->deserialize($request->getContent(), LowestPriceEnquiry::class, 'json');
+        // dd($LowestPriceEnquiry);
         //2. pass the Enquiry into a promotions filter
             //the appropriate promotion will be applied
         //#. return modified Enquiry
 
+     
         $product = $this->repository->find($id); //add error handling for not found product
         
-        $lowestPriceEquiry->setProduct($product);
+        $LowestPriceEnquiry->setProduct($product);
 
         $promotions = $this->entityManager->getRepository(Promotion::class)->findValidForProduct(
                         $product,
-                        date_create_immutable($lowestPriceEquiry->getRequestDate())
+                        date_create_immutable($LowestPriceEnquiry->getRequestDate())
         );
 
-        // dd($promotions);
+        // dd($promotions, $product, $LowestPriceEnquiry);
 
-        $modifiedEnquiry = $promotionsFilter->apply($lowestPriceEquiry, ...$promotions);
+        $modifiedEnquiry = $promotionsFilter->apply($LowestPriceEnquiry, ...$promotions);
 
         // dd($modifiedEnquiry);
         $responseContent =$serializer->serialize($modifiedEnquiry, 'json');
 
         return new Response($responseContent, Response::HTTP_OK, ['Content-Type'=> 'application/json']);
 
-        // return new JsonResponse($lowestPriceEquiry);
+        // return new JsonResponse($LowestPriceEnquiry);
         
         // return new JsonResponse([
         //     'quantity' => 5,

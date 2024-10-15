@@ -4,7 +4,7 @@ namespace App\DTO;
 use App\Entity\Product;
 use Symfony\Component\Serializer\Annotation\Ignore;
 
-class LowestPriceEquiry implements PromotionsEnquireInterface
+class LowestPriceEnquiry implements PriceEnquiryInterface
 {
 
     #[Ignore]
@@ -169,9 +169,9 @@ class LowestPriceEquiry implements PromotionsEnquireInterface
     /**
      * Set the value of promotionName
      */
-    public function setPromotionName(?string $promotionName): self
+    public function setPromotionName(?string $name): self
     {
-        $this->promotionName = $promotionName;
+        $this->promotionName = $name;
 
         return $this;
     }

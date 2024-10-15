@@ -2,7 +2,7 @@
 # vendor/bin/phpunit tests/unit/LowestPriceFilterTest.php 
 namespace App\Tests\unit;
 
-use App\DTO\LowestPriceEquiry;
+use App\DTO\LowestPriceEnquiry;
 use App\Entity\Product;
 use App\Entity\Promotion;
 use App\Filter\LowestPriceFilter;
@@ -22,7 +22,7 @@ class LowestPriceFilterTest extends ServiceTestCase
         $product->setPrice(100);
     
         
-        $enquiry = new LowestPriceEquiry();
+        $enquiry = new LowestPriceEnquiry();
         $enquiry->setProduct($product);
         $enquiry->setQuantity(5);
         $enquiry->setRequestDate("2025-11-27");

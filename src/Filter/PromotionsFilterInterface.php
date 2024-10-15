@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Filter;
-use App\DTO\LowestPriceEquiry;
-use App\DTO\PromotionsEnquireInterface;
+use App\DTO\LowestPriceEnquiry;
+use App\DTO\PriceEnquiryInterface;
 use App\Entity\Promotion;
 
 
-interface PromotionsFilterInterface
+interface PromotionsFilterInterface extends PriceFilterInterface
 {
-    public function apply(LowestPriceEquiry $enquiry, Promotion ...$promotion): LowestPriceEquiry;
+
 }

@@ -4,7 +4,7 @@ namespace App\Tests\unit;
 
 
 
-use App\DTO\LowestPriceEquiry;
+use App\DTO\LowestPriceEnquiry;
 use App\Entity\Promotion;
 use App\Filter\Modifier\DataRangeMultiplier;
 use App\Filter\Modifier\EvenItemsMultiplier;
@@ -25,7 +25,7 @@ class PriceModifiersTest extends ServiceTestCase
         $promotion->setCriteria(["code" => "OU812"]);
         $promotion->setType('fixed_price_voucher');
 
-        $enquiry = new LowestPriceEquiry();
+        $enquiry = new LowestPriceEnquiry();
         $enquiry->setQuantity(5);
         $enquiry->setVoucherCode('OU812');
 
@@ -41,7 +41,7 @@ class PriceModifiersTest extends ServiceTestCase
     {
         //Given
 
-        $enquiry = new LowestPriceEquiry();
+        $enquiry = new LowestPriceEnquiry();
         // $enquiry->setProduct($product);
         $enquiry->setQuantity(5);
         $enquiry->setRequestDate('2025-11-01');
@@ -69,7 +69,7 @@ class PriceModifiersTest extends ServiceTestCase
     public function EvenItemsMultiplier_returns_a_correctly_modified_price(): void
     {
         // Given
-        $enquiry = new LowestPriceEquiry();
+        $enquiry = new LowestPriceEnquiry();
         $enquiry->setQuantity(5);
 
         $promotion = new Promotion();
@@ -92,7 +92,7 @@ class PriceModifiersTest extends ServiceTestCase
     public function EvenItemsMultiplier_correctly_calculates_alternatives(): void
     {
         // Given
-        $enquiry = new LowestPriceEquiry();
+        $enquiry = new LowestPriceEnquiry();
         $enquiry->setQuantity(5);
 
         $promotion = new Promotion();
