@@ -2,10 +2,9 @@
 
 namespace App\Controller;
 
+use App\Cache\PromotionCache;
 use App\DTO\LowestPriceEnquiry;
-use App\Entity\Promotion;
 use App\Filter\LowestPriceFilter;
-use App\Filter\PromotionsFilterInterface;
 use App\Repository\ProductRepository;
 use App\Service\Serializer\DTOSerializer;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+
 class ProductController extends AbstractController
 {
 
@@ -23,7 +23,9 @@ class ProductController extends AbstractController
     // private EntityManager $entityManager;
     public function __construct(
         private ProductRepository $repository, //php >= 8
-        private EntityManagerInterface $entityManager)
+        private EntityManagerInterface $entityManager,
+        private PromotionCache $promotionCache,
+        )
     {
         // $this->repository = $repository;
         // $this->entityManager = $entityManager;
@@ -52,34 +54,32 @@ class ProductController extends AbstractController
 
         //1. Desirialize json data into DTO(data transfer object) EnquiryDTO
         /**
-         * @var LowestPriceEnquiry $LowestPriceEnquiry
+         * @var LowestPriceEnquiry $lowestPriceEnquiry
          */
-        $LowestPriceEnquiry = $serializer->deserialize($request->getContent(), LowestPriceEnquiry::class, 'json');
-        // dd($LowestPriceEnquiry);
-        //2. pass the Enquiry into a promotions filter
-            //the appropriate promotion will be applied
-        //#. return modified Enquiry
+        $lowestPriceEnquiry = $serializer->deserialize($request->getContent(), LowestPriceEnquiry::class, 'json');
+        // dd($lowestPriceEnquiry);
+
 
      
         $product = $this->repository->find($id); //add error handling for not found product
         
-        $LowestPriceEnquiry->setProduct($product);
 
-        $promotions = $this->entityManager->getRepository(Promotion::class)->findValidForProduct(
-                        $product,
-                        date_create_immutable($LowestPriceEnquiry->getRequestDate())
-        );
+        //2. pass the Enquiry into a promotions filter
+        //the appropriate promotion will be applied
+        //#. return modified Enquiry
+        $lowestPriceEnquiry->setProduct($product);
 
-        // dd($promotions, $product, $LowestPriceEnquiry);
+        $promotions = $this->promotionCache->findValidForProduct($product, $lowestPriceEnquiry->getRequestDate());
 
-        $modifiedEnquiry = $promotionsFilter->apply($LowestPriceEnquiry, ...$promotions);
+
+        $modifiedEnquiry = $promotionsFilter->apply($lowestPriceEnquiry, ...$promotions);
 
         // dd($modifiedEnquiry);
         $responseContent =$serializer->serialize($modifiedEnquiry, 'json');
 
         return new Response($responseContent, Response::HTTP_OK, ['Content-Type'=> 'application/json']);
 
-        // return new JsonResponse($LowestPriceEnquiry);
+        // return new JsonResponse($lowestPriceEnquiry);
         
         // return new JsonResponse([
         //     'quantity' => 5,
