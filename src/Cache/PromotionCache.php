@@ -20,7 +20,15 @@ class PromotionCache
     {
         $key = sprintf("find-valid-for-product-%d", $product->getId());
 
+        // dd($product);
+        // dd($this->cache->get ($key, function (ItemInterface $item){
+        //     return $item->getMetadata();
+        // }));
         return $this->cache->get($key, function (ItemInterface $item) use ($product, $requestDate) {
+
+            $item->expiresAfter(3); //seconds
+
+  
             var_dump('not in cache');
             return $this->repository->findValidForProduct(
                 $product,

@@ -2,6 +2,7 @@
 - https://github.com/GaryClarke/symfony-microservice
 
 - database : docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d mysql:latest v ~/mysql-data: var/lib/mysql
+- symfony console cache:pool:delete cache.app find-valid-for-product-1
 
 
 PRODUCT
@@ -38,3 +39,10 @@ docker-compose up -d
 
 symfony console make:migration
 symfony console doctrine:migrations:migrate
+
+
+====================== REDIS ======================
+- composer require predis/predis
+
+====================== EVENTS =====================
+- symfony console debug:autowiring EventDispatcher

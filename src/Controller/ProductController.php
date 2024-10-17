@@ -56,7 +56,10 @@ class ProductController extends AbstractController
         /**
          * @var LowestPriceEnquiry $lowestPriceEnquiry
          */
-        $lowestPriceEnquiry = $serializer->deserialize($request->getContent(), LowestPriceEnquiry::class, 'json');
+        $lowestPriceEnquiry = $serializer->deserialize(
+            $request->getContent(), 
+            LowestPriceEnquiry::class,
+             'json');
         // dd($lowestPriceEnquiry);
 
 
