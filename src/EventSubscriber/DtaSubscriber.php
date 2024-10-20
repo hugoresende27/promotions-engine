@@ -3,6 +3,7 @@
 namespace App\EventSubscriber;
 use App\Event\AfterDtoCreatedEvent;
 
+use App\Service\ServiceException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -34,7 +35,8 @@ class DtaSubscriber implements EventSubscriberInterface
 
         if (count($errors) > 0) {  
 
-            throw new ValidationFailedException('Validation Failed', $errors);
+            // throw new ValidationFailedException('Validation Failed', $errors);
+            throw new ServiceException(422, 'Validation Failed');
         }
     }
 

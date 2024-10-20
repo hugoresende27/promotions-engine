@@ -45,4 +45,5 @@ symfony console doctrine:migrations:migrate
 - composer require predis/predis
 
 ====================== EVENTS =====================
+- docs : https://symfony.com/doc/current/components/event_dispatcher.html#events
 - symfony console debug:autowiring EventDispatcher
