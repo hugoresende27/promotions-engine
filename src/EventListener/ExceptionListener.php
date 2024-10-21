@@ -16,15 +16,10 @@ class ExceptionListener
         $exception = $e->getThrowable();
 
         // dd($exception->getMessage(), $exception->getStatusCode());
-        $response = new JsonResponse([
-            "message"=> $exception->getMessage(),
-            "violations" => [
-                'propertyPath' => "stuff",
-                "message"=> $exception->getMessage(),
-            ],
 
-            "type" => get_class($exception),
-        ]);
+        $exceptionData = $exception->getExceptionData();
+
+        $response = new JsonResponse($exceptionData->toArray());
 
         if ($exception instanceof HttpExceptionInterface) {
             $response->setStatusCode($exception->getStatusCode());
